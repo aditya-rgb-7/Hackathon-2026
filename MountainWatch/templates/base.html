@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HydroSlope - Hazard Early Warning{% endblock %}</title>
+    <!-- Modern Sans Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Core Application CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <header class="top-header">
+        <div class="header-container">
+            <a href="/" class="brand-logo">
+                <span class="logo-icon">⛰️</span>
+                <div class="brand-text">
+                    <span class="brand-name">HydroSlope</span>
+                    <span class="brand-tag">DISASTER EARLY WARNING</span>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/mountains">Mountains</a>
+                <a href="/map">Live Map</a>
+                <a href="/sensors">Sensors</a>
+                <a href="/alerts">Alerts</a>
+                <a href="/incidents">Incidents</a>
+                <a href="/history">History</a>
+                <a href="/emergency" class="nav-emergency-btn">🚨 Emergency</a>
+                {% if session.get('is_admin') %}
+                <a href="/admin" class="nav-admin">Admin</a>
+                <a href="/logout" class="nav-logout">Logout</a>
+                {% else %}
+                <a href="/login" class="nav-login">Login</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="prototype-notice-banner">
+        ⚠️ <strong>PROTOTYPE SYSTEM:</strong> Sensor calculations and thresholds are engineered for simulation and risk
+        modeling. Not a substitute for official SDRF/NDRF early warning broadcasts.
+    </div>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p><strong>HydroSlope</strong> • Mountain Hazard Monitoring & Early Warning System</p>
+            <p>Sense • Analyze • Warn • Respond • Protect</p>
+            <p class="copyright">Built for Disaster Risk Reduction (DRR) in the Indian Himalayas.</p>
+            <p
+                style="margin-top: 6px; font-size: 0.85rem; color: var(--cyan-glow); font-family: 'JetBrains Mono', monospace;">
+                Project Owners & Creators: Radha, Aditya & Team
+            </p>
+        </div>
+    </footer>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

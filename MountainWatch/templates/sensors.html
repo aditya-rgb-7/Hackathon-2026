@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Sensor Telemetry - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-title-row">
+        <h2>Hardware Sensor Registry (ESP32 Nodes)</h2>
+        <button class="btn btn-outline" onclick="loadSensors()">🔄 Refresh Sensors</button>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Sensor ID</th>
+                    <th>Monitored Mountain</th>
+                    <th>Last Ingested Moisture</th>
+                    <th>Last Ingested Rain</th>
+                    <th>Health Status</th>
+                    <th>Heartbeat / Last Seen</th>
+                </tr>
+            </thead>
+            <tbody id="sensorsTableBody">
+                <tr>
+                    <td colspan="6" class="text-center">Scanning telemetry feeds...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sensors.js') }}"></script>
+{% endblock %}

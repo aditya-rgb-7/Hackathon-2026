@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block title %}MountainWatch - Home{% endblock %}
+{% block content %}
+<section class="hero-section">
+    <div class="hero-content">
+        <span class="badge badge-accent">IoT Mountain Sub-Surface Moisture Network</span>
+        <h1 class="hero-title">MountainWatch</h1>
+        <p class="hero-subtitle">Mountain Hazard Monitoring & Early Warning System</p>
+        <p class="hero-tagline">Sense • Analyze • Warn • Respond • Protect</p>
+
+        <p class="hero-desc">
+            Deploying resilient, telemetry-enabled ESP32 micro-stations across vulnerable Himalayan catchments.
+            Continuous sensing of soil moisture saturation and accelerated hydraulic surges to preempt slope failures
+            and debris torrents.
+        </p>
+
+        <div class="hero-cta">
+            <a href="/dashboard" class="btn btn-primary">Open Live Dashboard</a>
+            <a href="/map" class="btn btn-secondary">View Mountain Map</a>
+            <a href="/emergency" class="btn btn-emergency">Call for Help</a>
+        </div>
+    </div>
+</section>
+
+<section class="kpi-grid">
+    <div class="kpi-card">
+        <span class="kpi-title">Monitored Sectors</span>
+        <span class="kpi-value">{{ mountain_count }}</span>
+        <span class="kpi-sub">High-altitude catchments</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Telemetry Sensors</span>
+        <span class="kpi-value text-success">{{ online_sensors }}</span>
+        <span class="kpi-sub">Online & streaming data</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Active Warnings</span>
+        <span class="kpi-value text-warning">{{ active_alerts }}</span>
+        <span class="kpi-sub">Elevation watchlist</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Critical Hazards</span>
+        <span class="kpi-value text-danger">{{ critical_alerts }}</span>
+        <span class="kpi-sub">High pore-water pressure</span>
+    </div>
+</section>
+
+<section class="architecture-section">
+    <h2>How MountainWatch Works</h2>
+    <div class="flow-steps">
+        <div class="step-card">
+            <div class="step-num">1</div>
+            <h3>ESP32 SENSING</h3>
+            <p>Capacitive sub-surface moisture probes & tipping-bucket rainfall sensors gather real-time hydraulic soil
+                conditions.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-num">2</div>
+            <h3>TRANSMISSION</h3>
+            <p>Encrypted lightweight JSON packets dispatched over cellular/Wi-Fi to the centralized monitoring ingestion
+                engine.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-num">3</div>
+            <h3>ANALYSIS ENGINE</h3>
+            <p>Statistical rate-of-change algorithms evaluate slope saturation velocity and flag threshold breaches.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-num">4</div>
+            <h3>DISASTER WARNING</h3>
+            <p>Automated warning distribution to local community checkpoints, safe shelter routing, and SDRF response
+                teams.</p>
+        </div>
+    </div>
+</section>
+<section class="team-section" style="margin-top: 56px; margin-bottom: 20px;">
+    <div style="text-align: center; margin-bottom: 28px;">
+        <span class="badge badge-accent">PROJECT CREATORS & OWNERS</span>
+        <h2 style="margin-top: 8px; font-family: 'Chakra Petch', sans-serif; font-size: 2rem;">Engineering & Development
+            Team</h2>
+        <p class="text-muted" style="font-size: 0.9rem; margin-top: 4px;">System Design • IoT Hardware • Risk Modeling •
+            Full-Stack Operations</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
+        <!-- Member 1 -->
+        <div class="card" style="text-align: center; padding: 22px; border-left: 3px solid var(--cyan-glow);">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">👨‍💻</div>
+            <h3 style="margin-bottom: 4px; font-size: 1.15rem;">Aditya lade</h3>
+            <p
+                style="color: var(--cyan-glow); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 8px;">
+                Full-Stack & System Lead</p>
+            <p class="text-muted" style="font-size: 0.85rem;">Backend Engine, REST APIs & Live Telemetry Polling</p>
+        </div>
+
+        <!-- Member 2 -->
+        <div class="card" style="text-align: center; padding: 22px; border-left: 3px solid var(--cyan-glow);">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">⚡</div>
+            <h3 style="margin-bottom: 4px; font-size: 1.15rem;">Sahil vadekar</h3>
+            <p
+                style="color: var(--cyan-glow); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 8px;">
+                Hardware & Embedded Systems</p>
+            <p class="text-muted" style="font-size: 0.85rem;">ESP32 Firmware, ADC Calibration & Wi-Fi Client</p>
+        </div>
+
+        <!-- Member 3 -->
+        <div class="card" style="text-align: center; padding: 22px; border-left: 3px solid var(--cyan-glow);">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">🔬</div>
+            <h3 style="margin-bottom: 4px; font-size: 1.15rem;">Devarsh lade</h3>
+            <p
+                style="color: var(--cyan-glow); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 8px;">
+                Geotechnical Analyst</p>
+            <p class="text-muted" style="font-size: 0.85rem;">Soil Saturation Modeling & Pore-Pressure Baselines</p>
+        </div>
+
+        <!-- Member 4 -->
+        <div class="card" style="text-align: center; padding: 22px; border-left: 3px solid var(--cyan-glow);">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">📡</div>
+            <h3 style="margin-bottom: 4px; font-size: 1.15rem;">Team member 4</h3>
+            <p
+                style="color: var(--cyan-glow); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 8px;">
+                Sensor Array Engineer</p>
+            <p class="text-muted" style="font-size: 0.85rem;">Circuit Wiring, Analog Probes & Alert Actuators</p>
+        </div>
+
+        <!-- Member 5 -->
+        <div class="card" style="text-align: center; padding: 22px; border-left: 3px solid var(--cyan-glow);">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">📊</div>
+            <h3 style="margin-bottom: 4px; font-size: 1.15rem;">Team member 5</h3>
+            <p
+                style="color: var(--cyan-glow); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 8px;">
+                Frontend & UI/UX Specialist</p>
+            <p class="text-muted" style="font-size: 0.85rem;">Geospatial Leaflet Mapping & Mission Control Dashboards
+            </p>
+        </div>
+
+        <!-- Member 6 -->
+        <div class="card" style="text-align: center; padding: 22px; border-left: 3px solid var(--cyan-glow);">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">🚨</div>
+            <h3 style="margin-bottom: 4px; font-size: 1.15rem;">Team Member 6</h3>
+            <p
+                style="color: var(--cyan-glow); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 8px;">
+                Disaster Response & Safety Lead</p>
+            <p class="text-muted" style="font-size: 0.85rem;">Emergency Dispatch Architecture & Evacuation Protocol</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Hazard Alerts - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-title-row">
+        <h2>Automated Early Warning Alerts</h2>
+        <div class="filter-group">
+            <select id="riskFilter" class="form-control" onchange="renderFilteredAlerts()">
+                <option value="ALL">All Hazard Levels</option>
+                <option value="CRITICAL">Critical Only</option>
+                <option value="WARNING">Warning Only</option>
+            </select>
+        </div>
+    </div>
+    <div class="alerts-stream" id="alertsStream">
+        <p class="text-center">Querying alert dispatch queue...</p>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+{% endblock %}

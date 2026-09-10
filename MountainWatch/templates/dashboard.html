@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block title %}Live Hazard Dashboard - MountainWatch{% endblock %}
+{% block content %}
+<div class="dashboard-header">
+    <div class="dashboard-title-area">
+        <h1>Live Hazard Dashboard</h1>
+        <p class="text-muted">Real-time geotechnical sensor streaming & slope stability telemetry</p>
+    </div>
+    <div class="dashboard-controls">
+        <label for="mountainSelect"><strong>Select Mountain Sector:</strong></label>
+        <select id="mountainSelect" class="form-control select-mountain">
+            <option value="">Loading monitored sectors...</option>
+        </select>
+        <button id="refreshBtn" class="btn btn-outline" title="Refresh Telemetry">🔄 Sync Now</button>
+    </div>
+</div>
+
+<div id="offlineAlertBanner" class="alert-banner-offline" style="display:none;">
+    ⚠️ SENSOR OFFLINE / TELEMETRY UNAVAILABLE: Data from this sector is outdated. Slope cannot be declared Safe.
+</div>
+
+<div class="cards-grid">
+    <div class="metric-card">
+        <div class="metric-head">
+            <span>CURRENT MOISTURE</span>
+            <span class="sensor-badge" id="sensorStatusBadge">CONNECTING...</span>
+        </div>
+        <div class="metric-main">
+            <span class="metric-val" id="valMoisture">--</span>
+            <span class="metric-unit">%</span>
+        </div>
+        <div class="metric-foot">
+            <span>Sensor ID: <strong id="sensorIdLabel">--</strong></span>
+            <span id="lastUpdateLabel">--</span>
+        </div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-head">
+            <span>MOISTURE CHANGE RATE</span>
+            <span class="trend-icon" id="trendIcon">↔</span>
+        </div>
+        <div class="metric-main">
+            <span class="metric-val" id="valRate">--</span>
+            <span class="metric-unit">%/hr</span>
+        </div>
+        <div class="metric-foot">
+            <span>Trend: <strong id="trendLabel">Calculating...</strong></span>
+        </div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-head">
+            <span>CURRENT RAINFALL</span>
+            <span class="rain-status" id="rainStatus">NORMAL</span>
+        </div>
+        <div class="metric-main">
+            <span class="metric-val" id="valRainfall">--</span>
+            <span class="metric-unit">mm</span>
+        </div>
+        <div class="metric-foot">
+            <span>Accumulation: <strong id="rainAccumLabel">Measured Hourly</strong></span>
+        </div>
+    </div>
+
+    <div class="metric-card risk-card" id="riskCard">
+        <div class="metric-head">
+            <span>HAZARD EVALUATION</span>
+            <span class="prototype-tag">PROTOTYPE</span>
+        </div>
+        <div class="metric-main">
+            <span class="metric-val" id="valRiskLevel">SAFE</span>
+        </div>
+        <div class="metric-foot">
+            <span id="riskMessage">Soil structural stability intact.</span>
+        </div>
+    </div>
+</div>
+
+<div class="analytics-row">
+    <div class="chart-panel">
+        <div class="panel-header">
+            <h3>15-Day Moisture Progression & Trend</h3>
+            <span class="demo-tag" id="demoTag">Simulated Baseline Included</span>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="moistureChart"></canvas>
+        </div>
+    </div>
+
+    <div class="stats-panel">
+        <h3>15-Day Statistical Baseline</h3>
+        <ul class="stats-list">
+            <li>
+                <span>15-Day Peak Moisture:</span>
+                <strong id="statMax">--%</strong>
+            </li>
+            <li class="stat-sub">
+                <span>Peak Timestamp:</span>
+                <span id="statMaxTime">--</span>
+            </li>
+            <li>
+                <span>15-Day Minimum Moisture:</span>
+                <strong id="statMin">--%</strong>
+            </li>
+            <li class="stat-sub">
+                <span>Min Timestamp:</span>
+                <span id="statMinTime">--</span>
+            </li>
+            <li>
+                <span>15-Day Average Moisture:</span>
+                <strong id="statAvg">--%</strong>
+            </li>
+            <li>
+                <span>All-Time Recorded Peak:</span>
+                <strong id="statHistoricalMax" class="text-danger">--%</strong>
+            </li>
+        </ul>
+
+        <div class="quick-links">
+            <a id="lnkDetail" href="#" class="btn btn-block btn-secondary">Detailed Mountain Profile & Nearby Villages
+                →</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

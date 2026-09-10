@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Interactive Mountain Hazard Map - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-title-row">
+        <h2>Geospatial Hazard Map (Indian Himalayan Belts)</h2>
+        <div class="legend-bar">
+            <span class="legend-item"><span class="dot green"></span> Safe</span>
+            <span class="legend-item"><span class="dot yellow"></span> Watch</span>
+            <span class="legend-item"><span class="dot orange"></span> Warning</span>
+            <span class="legend-item"><span class="dot red"></span> Critical</span>
+            <span class="legend-item"><span class="dot grey"></span> Offline</span>
+        </div>
+    </div>
+    <div id="map" class="full-screen-map"></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}

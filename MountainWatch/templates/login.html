@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Admin Sign In - MountainWatch{% endblock %}
+{% block content %}
+<div class="login-wrapper">
+    <div class="login-card">
+        <h2>Authorized Personnel Login</h2>
+        <p class="text-muted">Enter administrative passphrase to access sensor calibration and mountain sector registry.
+        </p>
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label>Master Security Passphrase</label>
+                <input type="password" name="password" class="form-control" placeholder="Default: admin123" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Authenticate System Access</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

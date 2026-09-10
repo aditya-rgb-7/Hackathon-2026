@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Monitored Mountains - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-title-row">
+        <h2>Monitored Himalayan Sectors</h2>
+        <p class="text-muted">Direct overview of all active sensor stations and geographical coordinates</p>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table" id="mountainsTable">
+            <thead>
+                <tr>
+                    <th>Mountain ID</th>
+                    <th>Name</th>
+                    <th>State</th>
+                    <th>Elevation</th>
+                    <th>Sensor ID</th>
+                    <th>Sensor Status</th>
+                    <th>Current Moisture</th>
+                    <th>Risk State</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="mountainsTableBody">
+                <tr>
+                    <td colspan="9" class="text-center">Loading registered sectors...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const res = await fetch('/api/mountains');
+        const data = await res.json();
+        const tbody = document.getElementById('mountainsTableBody');
+        tbody.innerHTML = '';
+        data.mountains.forEach(m => {
+            const badgeColor = m.risk ? m.risk.color : '#6c757d';
+            const riskLevel = m.risk ? m.risk.level : 'UNKNOWN';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td><strong>${m.id}</strong></td>
+            <td><strong>${m.name}</strong><br><small class="text-muted">${m.location}</small></td>
+            <td>${m.state}</td>
+            <td>${m.elevation} m</td>
+            <td>${m.sensor_id || 'N/A'}</td>
+            <td><span class="status-pill ${m.sensor_status === 'ONLINE' ? 'online' : 'offline'}">${m.sensor_status}</span></td>
+            <td><strong>${m.current_moisture !== null ? m.current_moisture + '%' : '--'}</strong></td>
+            <td><span class="risk-badge" style="background:${badgeColor}">${riskLevel}</span></td>
+            <td><a href="/mountain/${m.id}" class="btn btn-sm btn-outline">View Profile</a></td>
+        `;
+            tbody.appendChild(tr);
+        });
+    });
+</script>
+{% endblock %}

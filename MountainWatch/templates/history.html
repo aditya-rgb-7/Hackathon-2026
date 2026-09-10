@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Alert History - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-title-row">
+        <h2>Archived Alert History</h2>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Mountain</th>
+                    <th>Risk</th>
+                    <th>Moisture</th>
+                    <th>Rainfall</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="historyTableBody">
+                <tr>
+                    <td colspan="7" class="text-center">Loading alert records...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const res = await fetch('/api/alerts');
+        const data = await res.json();
+        const tbody = document.getElementById('historyTableBody');
+        tbody.innerHTML = '';
+        data.alerts.forEach(a => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${a.timestamp}</td>
+            <td><strong>${a.mountain_name}</strong></td>
+            <td><span class="risk-badge" style="background:${a.risk_level === 'CRITICAL' ? '#d90429' : '#f77f00'}">${a.risk_level}</span></td>
+            <td>${a.moisture}%</td>
+            <td>${a.rainfall} mm</td>
+            <td>${a.message}</td>
+            <td><strong>${a.status}</strong></td>
+        `;
+            tbody.appendChild(tr);
+        });
+    });
+</script>
+{% endblock %}

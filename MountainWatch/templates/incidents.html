@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Sensor-Assisted Incidents - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-title-row">
+        <h2>Sensor-Assisted Historical Incidents</h2>
+        <span class="badge badge-accent">Post-Disaster Audits</span>
+    </div>
+    <p class="text-muted">Chronological record of geotechnical slip events where automated moisture anomaly detection
+        informed proactive response protocols.</p>
+
+    <div class="incidents-container" id="incidentsList">
+        <p>Loading historical records...</p>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const res = await fetch('/api/accidents');
+        const data = await res.json();
+        const container = document.getElementById('incidentsList');
+        container.innerHTML = '';
+
+        if (data.incidents.length === 0) {
+            container.innerHTML = '<p>No historical incidents on record.</p>';
+            return;
+        }
+
+        data.incidents.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'incident-card';
+            div.innerHTML = `
+            <div class="incident-badge">${item.is_simulated ? 'SIMULATED AUDIT' : 'DOCUMENTED EVENT'}</div>
+            <div class="incident-head">
+                <h3>${item.mountain_name} (${item.state}) —${item.type}</h3>
+                <span class="incident-date">📅 ${item.date}</span>
+            </div>
+            <div class="timeline-step">
+                <strong>Event Trigger:</strong> ${item.description}
+            </div>
+            <div class="timeline-step">
+                <strong>Sensor Telemetry Detected:</strong> ${item.sensor_observation}
+            </div>
+            <div class="timeline-step">
+                <strong>Alert Issued:</strong> ${item.alert_generated}
+            </div>
+            <div class="timeline-step">
+                <strong>Disaster Mitigation Response:</strong> ${item.response}
+            </div>
+            <div class="timeline-step highlight">
+                <strong>Outcome:</strong> ${item.outcome}
+            </div>
+            ${item.source_ref ? `<div class="incident-ref">Source: <em>${item.source_ref}</em></div>` : ''}
+        `;
+            container.appendChild(div);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Mountain Geotechnical Profile - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container" id="mountainProfileContainer">
+    <div class="profile-header">
+        <div>
+            <span class="badge" id="mState">--</span>
+            <h1 id="mName">Loading Mountain...</h1>
+            <p id="mLocation" class="text-muted">--</p>
+        </div>
+        <div class="profile-risk-box" id="mRiskBox">
+            <span class="label">CURRENT RISK EVALUATION</span>
+            <h2 id="mRiskLevel">--</h2>
+        </div>
+    </div>
+
+    <div class="info-grid">
+        <div class="card">
+            <h3>Geographical & Hydrological Attributes</h3>
+            <ul class="data-list">
+                <li><strong>Elevation:</strong> <span id="mElevation">--</span></li>
+                <li><strong>Coordinates:</strong> <span id="mCoords">--</span></li>
+                <li><strong>Primary River Drainage:</strong> <span id="mRiver">--</span></li>
+                <li><strong>Assigned Sensor ID:</strong> <span id="mSensorId">--</span></li>
+                <li><strong>Telemetry Status:</strong> <span id="mSensorStatus">--</span></li>
+            </ul>
+            <p class="description" id="mDesc">--</p>
+        </div>
+
+        <div class="card">
+            <h3>Hydraulic Moisture Summary</h3>
+            <div class="highlight-stats">
+                <div>
+                    <span class="stat-lbl">Live Moisture</span>
+                    <strong class="stat-num" id="mMoisture">--%</strong>
+                </div>
+                <div>
+                    <span class="stat-lbl">Live Rainfall</span>
+                    <strong class="stat-num" id="mRainfall">-- mm</strong>
+                </div>
+                <div>
+                    <span class="stat-lbl">15-Day Max</span>
+                    <strong class="stat-num" id="m15Max">--%</strong>
+                </div>
+                <div>
+                    <span class="stat-lbl">All-Time Max</span>
+                    <strong class="stat-num text-danger" id="mHistMax">--%</strong>
+                </div>
+            </div>
+            <div class="advisory-box" id="advisoryBox">
+                <h4>Safety Advisory</h4>
+                <p id="advisoryText">Conditions normal. No active evacuations recommended.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="locations-grid">
+        <div class="card">
+            <h3>Nearby Settlement Areas & Hamlets</h3>
+            <table class="simple-table">
+                <thead>
+                    <tr>
+                        <th>Settlement Name</th>
+                        <th>Distance</th>
+                        <th>Est. Inhabitants</th>
+                    </tr>
+                </thead>
+                <tbody id="villagesList">
+                    <tr>
+                        <td colspan="3">No nearby hamlets documented.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>Configured Safe Evacuation Zones</h3>
+            <table class="simple-table">
+                <thead>
+                    <tr>
+                        <th>Shelter / Facility</th>
+                        <th>Type</th>
+                        <th>Emergency Contact</th>
+                    </tr>
+                </thead>
+                <tbody id="safeLocsList">
+                    <tr>
+                        <td colspan="3">No designated emergency shelters logged.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    const mountainId = "{{ mountain_id }}";
+</script>
+<script src="{{ url_for('static', filename='js/mountain.js') }}"></script>
+{% endblock %}

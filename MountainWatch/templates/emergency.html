@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Emergency Action & Help - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="emergency-wrapper">
+        <div class="emergency-header">
+            <h1 class="emergency-title">🚨 Incident Reporting & Immediate Assistance</h1>
+            <p>Direct communication channel to regional disaster dispatchers and field response coordinators.</p>
+        </div>
+
+        <div class="call-banner">
+            <div>
+                <h3>Immediate Threat to Life?</h3>
+                <p>Call the designated Himalayan Emergency Response hotline directly:</p>
+            </div>
+            <a href="tel:{{ emergency_phone }}" class="btn btn-call">📞 CALL {{ emergency_phone }}</a>
+        </div>
+
+        <div class="emergency-form-card">
+            <h3>File Incident Dispatch Report</h3>
+            <form id="emergencyForm">
+                <div class="form-group">
+                    <label>Monitored Sector / Location *</label>
+                    <select id="empMountain" class="form-control" required>
+                        <option value="">Select affected sector...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Incident Classification *</label>
+                    <select id="empType" class="form-control" required>
+                        <option value="Landslide">Active Landslide / Mudflow</option>
+                        <option value="Heavy Rain">Torrential Cloudburst</option>
+                        <option value="Flood">Flash Flood / River Swell</option>
+                        <option value="Person Trapped">Civilians / Pilgrims Trapped</option>
+                        <option value="Road Blocked">Highway / Roadway Blocked</option>
+                        <option value="Other">Other Geotechnical Hazard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Specific Landmark / Kilometer Marker *</label>
+                    <input type="text" id="empLocation" class="form-control"
+                        placeholder="e.g., Near Rambara Bridge, Km 14" required>
+                </div>
+                <div class="form-group">
+                    <label>Estimated Individuals Affected</label>
+                    <input type="number" id="empAffected" class="form-control" value="1" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Callback Phone Number</label>
+                    <input type="tel" id="empPhone" class="form-control" placeholder="+91-XXXXX-XXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Description of Incident</label>
+                    <textarea id="empDesc" class="form-control" rows="4"
+                        placeholder="Detail observed boulder movements, soil slippage, water runoff colors, etc."></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger btn-block btn-lg" id="btnSubmitEmergency">SEND EMERGENCY
+                    DISPATCH</button>
+            </form>
+            <div id="emergencyStatusMsg" style="margin-top:15px; display:none;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/emergency.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}System Management Console - MountainWatch{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-title-row">
+        <h2>Operations & Admin Management Console</h2>
+        <span class="badge badge-accent">Access Level: Administrator</span>
+    </div>
+
+    <div class="admin-grid">
+        <div class="card">
+            <h3>Register New Mountain Sector</h3>
+            <form id="addMountainForm">
+                <div class="form-group">
+                    <label>Sector ID (e.g. MT005)</label>
+                    <input type="text" id="admId" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Mountain Sector Name</label>
+                    <input type="text" id="admName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>State</label>
+                    <input type="text" id="admState" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>District / Sector Location</label>
+                    <input type="text" id="admLocation" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Latitude</label>
+                        <input type="number" step="0.0001" id="admLat" class="form-control" required>
+                    </div>
+                    <div class="form-group col">
+                        <label>Longitude</label>
+                        <input type="number" step="0.0001" id="admLon" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Elevation (Meters)</label>
+                    <input type="number" id="admElevation" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Primary Drainage River</label>
+                    <input type="text" id="admRiver" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Geotechnical Description</label>
+                    <textarea id="admDesc" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Add Sector to Database</button>
+            </form>
+            <div id="adminStatusMsg" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card">
+            <h3>Simulate ESP32 Ingestion Packet</h3>
+            <p class="text-muted">Use this testing tool to send a live telemetry reading as if from an ESP32 hardware
+                device.</p>
+            <form id="simulatePacketForm">
+                <div class="form-group">
+                    <label>Target Sensor ID</label>
+                    <input type="text" id="simSensorId" class="form-control" value="M001" required>
+                </div>
+                <div class="form-group">
+                    <label>Target Mountain ID</label>
+                    <input type="text" id="simMountainId" class="form-control" value="MT001" required>
+                </div>
+                <div class="form-group">
+                    <label>Moisture Percentage (%)</label>
+                    <input type="number" step="0.1" id="simMoisture" class="form-control" value="89.5" required>
+                </div>
+                <div class="form-group">
+                    <label>Rainfall (mm)</label>
+                    <input type="number" step="0.1" id="simRain" class="form-control" value="32.0" required>
+                </div>
+                <button type="submit" class="btn btn-secondary btn-block">POST Telemetry to /api/sensor-data</button>
+            </form>
+            <pre id="packetResult" class="code-box">Awaiting packet dispatch...</pre>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}
