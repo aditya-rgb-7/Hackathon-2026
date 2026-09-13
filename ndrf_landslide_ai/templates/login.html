@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NDRF Tactical Network // Authentication</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        body {
+            background: #020617;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-box {
+            background: #0b1329;
+            border: 2px solid #f59e0b;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+            padding: 36px;
+            width: 420px;
+            border-radius: 4px;
+        }
+
+        .title {
+            color: #f59e0b;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            background: #020617;
+            border: 1px solid #1e293b;
+            color: #fff;
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #f59e0b;
+        }
+
+        button {
+            width: 100%;
+            background: #f59e0b;
+            color: #020617;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 8px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+        }
+
+        .demo-hint {
+            margin-top: 20px;
+            background: #020617;
+            border: 1px dashed #334155;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+        <div class="title">&#9670; NDRF CRISIS COMMAND</div>
+        <div class="sub">LANDSLIDE PREDICTIVE AI GATEWAY // RESTRICTED</div>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label>Officer Callsign</label>
+                <input type="text" name="username" required autocomplete="off" placeholder="e.g. commander_ner">
+            </div>
+            <div class="form-group">
+                <label>Security Key</label>
+                <input type="password" name="password" required placeholder="Enter key">
+            </div>
+            <button type="submit">Verify & Access Deck</button>
+        </form>
+
+        <div class="demo-hint">
+            <strong>AUTHORIZED CREDENTIALS:</strong><br>
+            Callsign: <code>commander_ner</code><br>
+            Key: <code>Battalion12@NER</code>
+        </div>
+    </div>
+
+</body>
+
+</html>
