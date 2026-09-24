@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDRF Situation Room // Landslide AI Deck</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=JetBrains+Mono:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- LEAFLET CSS (MANDATORY TO PREVENT BLANK SCREEN) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --panel: #0b1329;
+            --border: #1e293b;
+            --ndrf-gold: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--panel);
+            border-bottom: 2px solid var(--ndrf-gold);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .brand {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--ndrf-gold);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .officer-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .btn-logout {
+            color: #ef4444;
+            text-decoration: none;
+            margin-left: 12px;
+            font-weight: 700;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 16px;
+            padding: 16px;
+            flex: 1;
+            height: calc(100vh - 60px);
+        }
+
+        .panel-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .panel-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 6px;
+            margin-bottom: 14px;
+        }
+
+        select,
+        input[type="range"] {
+            width: 100%;
+            background: #020617;
+            color: #fff;
+            border: 1px solid var(--border);
+            padding: 10px;
+            margin-bottom: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            outline: none;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .slider-val {
+            color: var(--ndrf-gold);
+            font-weight: 700;
+        }
+
+        .threat-gauge {
+            background: #020617;
+            border: 2px solid var(--border);
+            padding: 16px;
+            text-align: center;
+            border-radius: 4px;
+            margin-top: 6px;
+        }
+
+        .threat-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .threat-tag {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .directive-card {
+            background: rgba(2, 6, 23, 0.8);
+            border-left: 4px solid var(--ndrf-gold);
+            padding: 12px;
+            margin-top: 14px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Fixed Full-Height Container for Leaflet */
+        #map-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        #gisMap {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100%;
+            background: #090d16;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">&#9670; NDRF SITUATION ROOM // REAL-TIME SATELLITE AI FORECASTING</div>
+        <div class="officer-tag">
+            OFFICER CALLSIGN: <strong>{{ officer }}</strong>
+            <a href="/logout" class="btn-logout">[LOGOUT]</a>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- Left Control Panel -->
+        <aside class="panel-box">
+            <div class="panel-header">Select Sector & Telemetry Feeds</div>
+
+            <select id="sectorSelect" onchange="runInference()">
+                {% for id, sec in sectors.items() %}
+                <option value="{{ id }}">{{ sec.name }}</option>
+                {% endfor %}
+            </select>
+
+            <div class="slider-label">
+                <span>NASA GPM (72h Cumulative Rain):</span>
+                <span class="slider-val" id="dispRain">140 mm</span>
+            </div>
+            <input type="range" id="rainSlider" min="0" max="500" value="140" oninput="syncSliders(); runInference();">
+
+            <div class="slider-label">
+                <span>Sentinel-1 SAR (InSAR Creep):</span>
+                <span class="slider-val" id="dispCreep">8.5 mm/mo</span>
+            </div>
+            <input type="range" id="creepSlider" min="0" max="50" step="0.5" value="8.5"
+                oninput="syncSliders(); runInference();">
+
+            <div class="slider-label">
+                <span>SMAP Satellite (Soil Saturation):</span>
+                <span class="slider-val" id="dispMoist">45 %</span>
+            </div>
+            <input type="range" id="moistSlider" min="10" max="100" value="45" oninput="syncSliders(); runInference();">
+
+            <div class="panel-header" style="margin-top: 10px;">AI Model Inference Engine</div>
+            <div class="threat-gauge">
+                <span style="font-family: 'JetBrains Mono'; font-size: 0.7rem; color: #64748b;">LANDSLIDE FAILURE
+                    PROBABILITY</span>
+                <div class="threat-score" id="riskPercent">0.0%</div>
+                <div class="threat-tag" id="threatTag">CALCULATING...</div>
+            </div>
+
+            <div class="directive-card">
+                <strong style="color: var(--ndrf-gold);">DISASTER DIRECTIVE:</strong>
+                <p id="tacticalMsg" style="margin-top: 4px; color: #cbd5e1;">Awaiting orbital inputs.</p>
+            </div>
+        </aside>
+
+        <!-- Right GIS Tactical Map -->
+        <section id="map-wrapper">
+            <div id="gisMap"></div>
+        </section>
+    </div>
+
+    <!-- LEAFLET JS SCRIPT -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        // 1. Initialize Leaflet Map
+        const map = L.map('gisMap', {
+            zoomControl: true,
+            attributionControl: true
+        }).setView([25.5, 91.5], 7);
+
+        // 2. High-reliability base map tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        let currentMarker = null;
+
+        function syncSliders() {
+            document.getElementById("dispRain").innerText = document.getElementById("rainSlider").value + " mm";
+            document.getElementById("dispCreep").innerText = document.getElementById("creepSlider").value + " mm/mo";
+            document.getElementById("dispMoist").innerText = document.getElementById("moistSlider").value + " %";
+        }
+
+        async function runInference() {
+            const secId = document.getElementById("sectorSelect").value;
+            const rain = document.getElementById("rainSlider").value;
+            const creep = document.getElementById("creepSlider").value;
+            const moist = document.getElementById("moistSlider").value;
+
+            try {
+                const res = await fetch('/api/live-infer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sector_id: secId,
+                        override_rain72: rain,
+                        override_creep: creep,
+                        override_moist: moist
+                    })
+                });
+
+                const data = await res.json();
+
+                // Update Text / Score Readouts
+                const scoreEl = document.getElementById("riskPercent");
+                const tagEl = document.getElementById("threatTag");
+                scoreEl.innerText = data.failure_probability + "%";
+                scoreEl.style.color = data.color;
+                tagEl.innerText = data.threat_status;
+                tagEl.style.color = data.color;
+                document.getElementById("tacticalMsg").innerText = data.tactical_action;
+
+                // Reposition and Fly to coordinates
+                const lat = data.coordinates.lat;
+                const lng = data.coordinates.lng;
+
+                map.invalidateSize(); // Forces map redraw to clear any blank grey/black patches
+                map.flyTo([lat, lng], 9, { duration: 1.0 });
+
+                if (currentMarker) map.removeLayer(currentMarker);
+
+                // Draw tactical marker with dynamic alert color
+                currentMarker = L.circleMarker([lat, lng], {
+                    radius: 20,
+                    fillColor: data.color,
+                    color: "#ffffff",
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                currentMarker.bindPopup(`
+            <b>${data.sector_name}</b><br>
+            Threat Level: <b style="color:${data.color}">${data.threat_status}</b><br>
+            Failure Probability: <b>${data.failure_probability}%</b><br>
+            Assigned Unit: <b>${data.assigned_battalion}</b>
+        `).openPopup();
+
+            } catch (err) {
+                console.error("Inference fetch failed:", err);
+            }
+        }
+
+        // Ensure Leaflet calculates viewport dimensions properly on initial render
+        window.addEventListener('load', () => {
+            syncSliders();
+            setTimeout(() => {
+                map.invalidateSize();
+                runInference();
+            }, 250);
+        });
+    </script>
+
+</body>
+
+</html>
