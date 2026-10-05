@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "mountainwatch-super-secret-key-2026")
 app.config['JSON_SORT_KEYS'] = False
 
-# Ensure database is initialized before serving requests
+
 with app.app_context():
     db.init_db()
 
